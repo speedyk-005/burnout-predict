@@ -1,0 +1,45 @@
+[project]
+name = "burnout-predict"
+version = "0.1.0"
+description = "ML microservice predicting student burnout probability and high-stress thresholds from academic and lifestyle telemetry."
+authors = [
+  { name = "speedyk_005", email = "speedy40115719@gmail.com" }
+]
+
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+  "pandas>=3.0.0,<4.0",
+  "scikit-learn>=1.0,<2.0",
+  "xgboost>=3.0,<4.0",
+  "joblib>=1.0,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "uv>=0.10",
+  "ruff>=0.14.14",
+]
+
+[project.urls]
+Repository = "https://github.com/speedyk-005/burnout-predict"
+Issues = "https://github.com/speedyk-005/burnout-predict/issues"
+
+[build-system]
+requires = [
+    "setuptools>=64",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 95
+
+[tool.ruff.lint]
+# E, W (Flake8), F (Pyflakes), I (Isort), B (Bugbear)
+select = ["E", "F", "I", "W", "B"]
+
+[tool.ruff.format]
+exclude = [".git", ".venv", "build", "dist"]
