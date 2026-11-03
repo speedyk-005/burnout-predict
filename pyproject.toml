@@ -41,5 +41,8 @@ line-length = 95
 # E, W (Flake8), F (Pyflakes), I (Isort), B (Bugbear)
 select = ["E", "F", "I", "W", "B"]
 
+[tool.ruff.lint.per-file-ignores]
+"notebook*" = ["F821"]
+
 [tool.ruff.format]
 exclude = [".git", ".venv", "build", "dist"]
