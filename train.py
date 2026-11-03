@@ -72,7 +72,7 @@ def train_test_split_df(df: pd.DataFrame):
     )
 
     df_test.to_csv("data/test.csv", index=False)
-    print("Test split saved as `test.csv`")
+    print("Test split saved as `data/test.csv`")
 
     return df_train, df_test
 
@@ -106,9 +106,11 @@ def print_model_metrics(model, df_test):
     print("accuracy_score:", round(accuracy_score(y_test, y_pred_binary), 3))
     print("recall_score:", round(recall_score(y_test, y_pred_binary), 3))
     print("f1_score:", round(f1_score(y_test, y_pred_binary), 3))
+    print()
 
 
 if __name__ == "__main__":
+    print("Training...")
     df_clean = load_and_clean_dataset(RAW_DATA_PATH)
     df_train, df_test = train_test_split_df(df_clean)
 
