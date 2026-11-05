@@ -14,6 +14,12 @@ pipeline = joblib.load("pipeline.bin")
 THRESHOLD = 0.48  # Keep in sync with THRESHOLD in train.py
 
 
+@app.get("/health")
+def health() -> dict[str, str]:
+    """Liveness probe for container and platform health checks."""
+    return {"status": "ok"}
+
+
 class StudentFeatures(BaseModel):
     """Enforces the exact feature schema"""
 
