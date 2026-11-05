@@ -30,9 +30,7 @@ def test_predict() -> None:
     try:
         response = requests.post(URL, json=payload, stream=True)
     except requests.exceptions.ConnectionError:
-        print(
-            "Error: Ensure the server is running in the background with `python predict.py`"
-        )
+        print("Error: Ensure the server is running in the background with `python predict.py`")
         return
 
     if response.status_code != 200:

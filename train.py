@@ -26,15 +26,15 @@ SEED = 42
 TEST_SIZE = 0.2
 XGB_PARAMS = {
     "objective": "binary:logistic",
-    "min_child_weight": 5,
-    "max_depth": 8,
+    "min_child_weight": 20,
+    "max_depth": 4,
     "eta": 0.1,
     "nthread": 8,
-    "seed": 1,
+    "seed": SEED,
     "verbosity": 1,
     "n_estimators": 100,
 }
-THRESHOLD = 0.46
+THRESHOLD = 0.48
 
 
 def load_and_clean_dataset(path: str) -> pd.DataFrame:
@@ -54,15 +54,20 @@ def load_and_clean_dataset(path: str) -> pd.DataFrame:
     df_clean["family_income_level"] = df_clean["family_income_level"].str.lower()
     df_clean["university_type"] = df_clean["university_type"].str.split().str[0].str.lower()
 
-    # Convert the label from ternary to binary
-    df_clean["burnout"] = (df_clean["stress_level"] == "High").astype(int)
-    df_clean = df_clean.drop(columns=["stress_level", "stress_score"])
+    # Let's convert the label from ternary to binary
+    df_clean["at_risk"] = df_clean["stress_level"].map(
+        {"Low": 0, "Medium": 1, "High": 1}
+    )
 
-    # Dropped cause it lacks temporal anchor
-    df_clean = df_clean.drop("exam_frequency", axis=1)
-
-    # This is related to stress too much
-    return df_clean.drop("anxiety_level", axis=1)
+    df_clean = df_clean.drop(
+        columns=[
+            "stress_level",
+            "stress_score",
+            "exam_frequency",  # Lacks a temporal anchor
+            "anxiety_level",  # Related to stress too much
+        ]
+    )
+    return df_clean
 
 
 def train_test_split_df(df: pd.DataFrame):
@@ -83,8 +88,8 @@ def train_test_split_df(df: pd.DataFrame):
 
 
 def train_model_pipeline(df_train: pd.DataFrame) -> Pipeline:
-    X_train_records = df_train.drop("burnout", axis=1).to_dict("records")
-    y_train = df_train["burnout"].values
+    X_train_records = df_train.drop("at_risk", axis=1).to_dict("records")
+    y_train = df_train["at_risk"].values
 
     pipeline = Pipeline(
         [
@@ -99,8 +104,8 @@ def train_model_pipeline(df_train: pd.DataFrame) -> Pipeline:
 
 
 def print_model_metrics(model, df_test):
-    X_test_records = df_test.drop("burnout", axis=1).to_dict("records")
-    y_test = df_test["burnout"].values
+    X_test_records = df_test.drop("at_risk", axis=1).to_dict("records")
+    y_test = df_test["at_risk"].values
 
     # Predict the probability of burnout, then binarize with the tuned cutoff
     y_pred = model.predict_proba(X_test_records)[:, 1]

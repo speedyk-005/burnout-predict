@@ -11,7 +11,7 @@ app = FastAPI()
 # Load the trained pipeline (DictVectorizer + XGBClassifier/XGBRegressor)
 pipeline = joblib.load("pipeline.bin")
 
-THRESHOLD = 0.46
+THRESHOLD = 0.48  # Keep in sync with THRESHOLD in train.py
 
 
 class StudentFeatures(BaseModel):
@@ -50,14 +50,14 @@ def predict(payload: StudentFeatures | list[StudentFeatures] = Body(...)) -> Str
     # Convert validated Pydantic models to plain dictionaries for DictVectorizer
     data_dicts = [item.model_dump() for item in payload]
 
-    # Predict probabilities for the positive class (burnout)
+    # Predict probabilities for the positive class (at_risk)
     probabilities = pipeline.predict_proba(data_dicts)[:, 1]
 
     def generate():
         for prob in probabilities:
             prob = float(prob)
             record = {
-                "burnout": prob >= THRESHOLD,
+                "at_risk": prob >= THRESHOLD,
                 "probability": round(prob, 3),
             }
             yield json.dumps(record) + "\n"
