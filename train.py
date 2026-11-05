@@ -49,6 +49,11 @@ def load_and_clean_dataset(path: str) -> pd.DataFrame:
     # Ensure age range
     df_clean = df_clean[(df_clean["age"] >= 19) & (df_clean["age"] <= 24)]
 
+    # Normalize income, gender and university type
+    df_clean["gender"] = df_clean["gender"].str.lower()
+    df_clean["family_income_level"] = df_clean["family_income_level"].str.lower()
+    df_clean["university_type"] = df_clean["university_type"].str.split().str[0].str.lower()
+
     # Convert the label from ternary to binary
     df_clean["burnout"] = (df_clean["stress_level"] == "High").astype(int)
     df_clean = df_clean.drop(columns=["stress_level", "stress_score"])
