@@ -9,7 +9,7 @@ Only the final pipeline is kept here:
   - fit a `DictVectorizer` + `XGBClassifier` pipeline
   - print test metrics, and persist the pipeline to `pipeline.bin`.
 
-The `THRESHOLD` cutoff below (0.46) came out of the threshold sweep in the
+The `THRESHOLD` cutoff below (0.48) came out of the threshold sweep in the
 notebook, not from the default 0.5.
 """
 
@@ -55,9 +55,7 @@ def load_and_clean_dataset(path: str) -> pd.DataFrame:
     df_clean["university_type"] = df_clean["university_type"].str.split().str[0].str.lower()
 
     # Let's convert the label from ternary to binary
-    df_clean["at_risk"] = df_clean["stress_level"].map(
-        {"Low": 0, "Medium": 1, "High": 1}
-    )
+    df_clean["at_risk"] = df_clean["stress_level"].map({"Low": 0, "Medium": 1, "High": 1})
 
     df_clean = df_clean.drop(
         columns=[
