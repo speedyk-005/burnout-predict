@@ -167,9 +167,6 @@ Model pipeline saved as: `pipeline.bin`
 Open with joblib.load('pipeline.bin')
 ```
 
-> [!Note]
-> `pipeline.bin` is the artifact the API loads, so this step must run before the service starts.
-
 #### 2. Start the API
 
 ```bash
@@ -220,3 +217,19 @@ docker run --rm -p 8000:8000 burnout-predict
 ```
 
 The image needs no network access at runtime: both the model and its feature schema are baked in. Dependencies are installed with `uv sync --frozen`, so the image uses the exact versions pinned in `uv.lock`; the same ones as your local `.venv`.
+
+## Deployment
+
+The service runs on Render's free plan, built from the [`Dockerfile`](Dockerfile) in this repo.
+
+### Deploy
+
+1. In the [Render Dashboard](https://dashboard.render.com), click **New > Web Service**.
+2. Connect this repository and pick the branch to track.
+3. Select **Docker** as the language, set the health check path to `/health`, and choose the **Free** plan.
+4. Render builds the `Dockerfile` from the repo root and serves the result at `https://<service-name>.onrender.com`.
+
+Every later push to that branch rebuilds the image and redeploys.
+
+Render injects `PORT`, which `predict.py` already reads, and the image is built from the `pipeline.bin` committed to the repo, so no build-time training step is needed.
+
