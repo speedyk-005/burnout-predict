@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <b>Demo url: https://burnout-predict-1944.onrender.com</b>
+  <b>Demo url: https://burnout-predict-1944.onrender.com/docs</b>
 </p>
 
 ## The Problem
