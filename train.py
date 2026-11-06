@@ -105,7 +105,7 @@ def print_model_metrics(model, df_test):
     X_test_records = df_test.drop("at_risk", axis=1).to_dict("records")
     y_test = df_test["at_risk"].values
 
-    # Predict the probability of burnout, then binarize with the tuned cutoff
+    # Predict at-risk probabilities, then binarize with the tuned cutoff
     y_pred = model.predict_proba(X_test_records)[:, 1]
     y_pred_binary = (y_pred >= THRESHOLD).astype(int)
 

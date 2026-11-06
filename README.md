@@ -30,7 +30,7 @@ This project uses the University Student Stress Dataset from Mendeley Data ([DOI
 
 ## Model
 
-**Task.** Binary classification: predict burnout with `at_risk`, defined as a self-reported stress level of `Medium` or `High` versus `Low`. The survey records three levels; collapsing the top two leaves a near-balanced target, with roughly 59% of respondents positive.
+**Task.** Binary classification: predict `at_risk`, meaning a student is trending toward burnout. The survey records self-reported stress on three levels rather than a clinical burnout diagnosis, so `Medium` or `High` stress is treated as the operational proxy for burnout risk; collapsing the top two leaves a near-balanced target with roughly 59% of respondents positive.
 
 **Cleaning.** `Timestamp` is dropped, the survey-question headers are reduced to their field name, rows are restricted to ages 19-24, and categorical values are lowercased so `Male` and `male` don't become separate categories.
 

@@ -1,7 +1,7 @@
 [project]
 name = "burnout-predict"
 version = "0.1.0"
-description = "ML microservice predicting student burnout probability and high-stress thresholds from academic and lifestyle telemetry."
+description = "ML microservice that flags students at risk of burnout from academic and lifestyle survey telemetry."
 authors = [
   { name = "speedyk_005", email = "speedy40115719@gmail.com" }
 ]
