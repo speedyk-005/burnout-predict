@@ -6,6 +6,10 @@
   <img src="https://raw.githubusercontent.com/speedyk-005/burnout-predict/main/logo.jpeg" alt="Chunklet-py Logo" width="400"/>
 </p>
 
+<p align="center">
+  <b>Demo url: https://burnout-predict-1944.onrender.com</b>
+</p>
+
 ## The Problem
 
 Academic institutions increasingly face high rates of student burnout, driven by heavy course loads, sleep deprivation, excessive screen time, and psychological stress. While early intervention can prevent severe academic failure and psychological distress, educational institutions lack automated tools to flag students at high risk before they reach a breaking point.
@@ -83,7 +87,64 @@ pip install -e .
 
 ## Usage
 
-### 1. Train the model
+Input format: one JSON object per student (or a JSON array of them), with all 14 fields required.
+
+| Field | Type | Accepted values |
+| --- | --- | --- |
+| `age` | integer | |
+| `gender` | string | `male`, `female` |
+| `study_hours` | number | |
+| `class_attendance` | number | percentage |
+| `tuition` | number | |
+| `assignment_load` | number | |
+| `sleep_hours` | number | |
+| `physical_exercise` | number | |
+| `social_media_use` | number | |
+| `screen_time` | number | |
+| `family_income_level` | string | `low`, `medium`, `high` |
+| `peer_pressure` | number | |
+| `family_support` | number | |
+| `university_type` | string | `national`, `private`, `public` |
+
+Unknown fields are rejected with `422`, and the same schema is rendered interactively at `/docs`.
+
+### Live demo
+
+The model is deployed on Render: **https://burnout-predict-1944.onrender.com**
+
+| Endpoint | Purpose |
+| --- | --- |
+| [`/docs`](https://burnout-predict-1944.onrender.com/docs) | Interactive OpenAPI documentation |
+| [`/health`](https://burnout-predict-1944.onrender.com/health) | Liveness probe, returns `{"status": "ok"}` |
+| `POST /predict` | Returns one NDJSON record per input |
+
+```bash
+curl -X POST https://burnout-predict-1944.onrender.com/predict \
+  -H 'Content-Type: application/json' \
+  -d '{
+        "age": 20, "gender": "male", "study_hours": 8,
+        "class_attendance": 90.0, "tuition": 1500.0, "assignment_load": 9,
+        "sleep_hours": 6.0, "physical_exercise": 4, "social_media_use": 9,
+        "screen_time": 7.5, "family_income_level": "low",
+        "peer_pressure": 3.0, "family_support": 3.0,
+        "university_type": "national"
+      }'
+```
+
+Response:
+
+```
+{"at_risk": true, "probability": 0.987}
+```
+
+> [!Note]
+> The demo runs on Render's free plan, which sleeps after 15 minutes without traffic. The first request after that takes about a minute while the instance wakes up; later requests answer in around a second.
+
+The steps below run the same service locally.
+
+### Local
+
+#### 1. Train the model
 
 ```bash
 uv run python train.py
@@ -109,7 +170,7 @@ Open with joblib.load('pipeline.bin')
 > [!Note]
 > `pipeline.bin` is the artifact the API loads, so this step must run before the service starts.
 
-### 2. Start the API
+#### 2. Start the API
 
 ```bash
 uv run python predict.py
@@ -117,28 +178,7 @@ uv run python predict.py
 
 Serves on `http://0.0.0.0:8000`. Endpoints: `GET /health` (liveness probe) and `POST /predict`; both are documented interactively at `http://127.0.0.1:8000/docs`.
 
-### 3. Verify it works
-
-Input format:
-
-```python
-class StudentFeatures(BaseModel):
-    age: int
-    gender: Literal["male", "female"]
-    study_hours: float
-    class_attendance: float
-    tuition: float
-    assignment_load: float
-    sleep_hours: float
-    physical_exercise: float
-    social_media_use: float
-    screen_time: float
-    family_income_level: Literal["low", "medium", "high"]
-    peer_pressure: float
-    family_support: float
-    university_type: Literal["national", "private", "public"]
-    model_config = ConfigDict(extra="forbid")
-```
+#### 3. Verify it works
 
 With the server running, in a second terminal:
 
