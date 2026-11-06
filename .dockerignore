@@ -1,0 +1,21 @@
+# Keep the build context small: the image only needs predict.py, pipeline.bin,
+# pyproject.toml, and uv.lock.
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ruff_cache/
+.pytest_cache/
+
+.git/
+.gitignore
+.dockerignore
+
+# Not needed at runtime
+notebook.ipynb
+data/
+logo.jpeg
+README.md
+AGENTS.md
+train.py
+test.py
