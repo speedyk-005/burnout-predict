@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Literal
 
 import joblib
@@ -74,4 +75,7 @@ def predict(payload: StudentFeatures | list[StudentFeatures] = Body(...)) -> Str
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("predict:app", host="0.0.0.0", port=8000, reload=True)
+    # Hosting platforms route traffic to the port they inject (Render, Railway, and
+    # Cloud Run all set PORT); fall back to 8000 for local runs.
+    port = int(os.environ.get("PORT", "8000"))
+    uvicorn.run("predict:app", host="0.0.0.0", port=port)
