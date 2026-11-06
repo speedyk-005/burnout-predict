@@ -9,7 +9,7 @@ Only the final pipeline is kept here:
   - fit a `DictVectorizer` + `XGBClassifier` pipeline
   - print test metrics, and persist the pipeline to `pipeline.bin`.
 
-The `THRESHOLD` cutoff below (0.48) came out of the threshold sweep in the
+The `THRESHOLD` cutoff below (0.47) came out of the threshold sweep in the
 notebook, not from the default 0.5.
 """
 
@@ -34,7 +34,7 @@ XGB_PARAMS = {
     "verbosity": 1,
     "n_estimators": 100,
 }
-THRESHOLD = 0.48
+THRESHOLD = 0.47
 
 
 def load_and_clean_dataset(path: str) -> pd.DataFrame:

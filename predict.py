@@ -12,7 +12,7 @@ app = FastAPI()
 # Load the trained pipeline (DictVectorizer + XGBClassifier/XGBRegressor)
 pipeline = joblib.load("pipeline.bin")
 
-THRESHOLD = 0.48  # Keep in sync with THRESHOLD in train.py
+THRESHOLD = 0.47  # Keep in sync with THRESHOLD in train.py
 
 
 @app.get("/health")

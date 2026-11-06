@@ -49,12 +49,12 @@ This project uses the University Student Stress Dataset from Mendeley Data ([DOI
 | Metric | Value |
 | --- | --- |
 | ROC AUC | 0.897 |
-| Accuracy | 0.808 |
-| Recall | 0.834 |
-| Precision | 0.846 |
-| F1 | 0.840 |
+| Accuracy | 0.810 |
+| Recall | 0.839 |
+| Precision | 0.844 |
+| F1 | 0.842 |
 
-**Decision threshold.** The cutoff is **0.48**, tuned by sweep in the notebook rather than left at the sklearn default of 0.5. It flags 356 of 600 students instead of 351; three more true positives for two extra false positives, lifting recall from 0.826 to 0.834. The gain over 0.5 is small, and 60 of the 361 at-risk students still fall below the cutoff.
+**Decision threshold.** The cutoff is **0.47**, tuned by sweep in the notebook rather than left at the sklearn default of 0.5. It flags 359 of 600 students instead of 351; five more true positives for three extra false positives, lifting recall from 0.825 to 0.839. The gain over 0.5 is small, and 58 of the 361 at-risk students still fall below the cutoff.
 
 ## Installation
 
@@ -159,9 +159,9 @@ Test split saved as `data/test.csv`
  == Metrics ==
 
 roc_auc_score: 0.897
-accuracy_score: 0.808
-recall_score: 0.834
-f1_score: 0.84
+accuracy_score: 0.81
+recall_score: 0.839
+f1_score: 0.842
 
 Model pipeline saved as: `pipeline.bin`
 Open with joblib.load('pipeline.bin')
