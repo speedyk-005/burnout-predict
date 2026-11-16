@@ -173,7 +173,7 @@ Open with joblib.load('pipeline.bin')
 uv run python predict.py
 ```
 
-Serves on host `http://0.0.0.0` or `http:localhost` and port `8000`. Endpoints: `GET /health` (liveness probe) and `POST /predict`; both are documented interactively at `http://127.0.0.1:8000/docs`.
+Serves on host `http://0.0.0.0` or `http://localhost` and port `8000`. Endpoints: `GET /health` (liveness probe) and `POST /predict`; both are documented interactively at `http://127.0.0.1:8000/docs`.
 
 #### 3. Verify it works
 
