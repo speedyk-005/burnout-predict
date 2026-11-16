@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <b>Demo url: https://burnout-predict-1944.onrender.com/docs</b>
+  <b>Demo docs: https://burnout-predict-1944.onrender.com/docs</b>
 </p>
 
 ## The Problem
@@ -80,7 +80,7 @@ This creates `.venv` and installs the exact versions pinned in `uv.lock`. The `d
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
+source .venv/bin/activate # Windows: .venv\Scripts\activate
 pip install -e .
 ```
 </details>
@@ -144,13 +144,13 @@ The steps below run the same service locally.
 
 ### Local
 
-#### 1. Train the model
+#### 1. Train the model (Optional, already done)
 
 ```bash
 uv run python train.py
 ```
 
-Reads `data/raw/university_student_stress.csv`, fits the `DictVectorizer` + `XGBClassifier` pipeline, writes `data/test.csv` and `pipeline.bin`. Expected output:
+It reads `data/raw/university_student_stress.csv`, fits the `DictVectorizer` + `XGBClassifier` pipeline, writes `data/test.csv` and `pipeline.bin`. Expected output:
 
 ```
 Training...
@@ -173,7 +173,7 @@ Open with joblib.load('pipeline.bin')
 uv run python predict.py
 ```
 
-Serves on `http://0.0.0.0:8000`. Endpoints: `GET /health` (liveness probe) and `POST /predict`; both are documented interactively at `http://127.0.0.1:8000/docs`.
+Serves on host `http://0.0.0.0` or `http:localhost` and port `8000`. Endpoints: `GET /health` (liveness probe) and `POST /predict`; both are documented interactively at `http://127.0.0.1:8000/docs`.
 
 #### 3. Verify it works
 
@@ -209,20 +209,20 @@ curl -X POST http://127.0.0.1:8000/predict \
 
 ### Docker
 
-`pipeline.bin` must exist before the image is built (run step 1 first).
-
 ```bash
 docker build -t burnout-predict .
 docker run --rm -p 8000:8000 burnout-predict
 ```
 
-The image needs no network access at runtime: both the model and its feature schema are baked in. Dependencies are installed with `uv sync --frozen`, so the image uses the exact versions pinned in `uv.lock`; the same ones as your local `.venv`.
+Both the model and its feature schema are baked in the image. Dependencies are installed with `uv sync --frozen`, so the image uses the exact versions pinned in `uv.lock`; the same ones as your local `.venv`.
 
 ## Deployment
 
 The service runs on Render's free plan, built from the [`Dockerfile`](Dockerfile) in this repo.
 
 ### Deploy
+
+If you want to deploy it yourself:
 
 1. In the [Render Dashboard](https://dashboard.render.com), click **New > Web Service**.
 2. Connect this repository and pick the branch to track.
